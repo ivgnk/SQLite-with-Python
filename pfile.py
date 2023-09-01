@@ -127,11 +127,36 @@ def delete_file(fname:str)->bool:
     else:
        return False
 
-def thetest_delete_file():
-    fname = 'MyChinook_Sqlite.sqlite'
+def thetest_delete_file(fname='MyChinook_Sqlite.sqlite'):
     print('файл = ', file_exist(fname))
     delete_file(fname)
     print('файл = ', file_exist(fname))
+
+# https://stackoverflow.com/questions/2504411/proper-indentation-for-multiline-strings
+
+def thetest_write_manylncomm_file():
+    '''
+    https://pythonru.com/osnovy/fajly-v-python-vvod-vyvod
+    '''
+    s = r'''fff
+    hhh
+    ttt'''
+    print(type(s))
+    print(s)
+    f = open('example.txt', 'w')
+    f.write(s)
+    f.close()
+
+def thetest_read_manylncomm_file():
+    '''
+    https://pythonru.com/osnovy/fajly-v-python-vvod-vyvod
+    '''
+    fname = 'example.txt'
+    if file_exist(fname):
+        f = open(fname, 'r')
+        ss= f.read()
+        f.close()
+        print(ss)
 
 ## --- test functions
 if __name__ == "__main__":
@@ -140,4 +165,13 @@ if __name__ == "__main__":
     # print(gfe(r'E:\Work_Lang\Python\PyCharm\Makroseis\Dat\.точки_ввод.XLSX'))
     # print(gfe(r'E:\Work_Lang\Python\PyCharm\Makroseis\Dat\.точки_ввод.Xlsx'))
     # print(gfn(r'E:\Work_Lang\Python\PyCharm\Makroseis\Dat\точки_ввод.Xlsx'))
-    thetest_delete_file()
+    # thetest_delete_file()
+    #thetest_write_manylncomm_file()
+    # thetest_write_manylncomm_file()
+
+    sЖ = """First line
+    Second line
+Third line"""
+    f = open('out.txt', 'w')
+    f.writelines()
+    f.close()

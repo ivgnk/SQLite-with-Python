@@ -21,5 +21,6 @@ def create_dict_with_tables()->dict:
 
 if __name__ == "__main__":
     # print(tables_list)
-    print('-- main_dict --')
-    print(create_dict_with_tables())
+    # print('-- main_dict --')
+    # print(create_dict_with_tables())
+    pass
