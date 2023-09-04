@@ -152,11 +152,17 @@ def thetest_read_manylncomm_file():
     https://pythonru.com/osnovy/fajly-v-python-vvod-vyvod
     '''
     fname = 'example.txt'
+    ss=''
     if file_exist(fname):
         f = open(fname, 'r')
         ss= f.read()
         f.close()
         print(ss)
+    print(type(ss))
+    fname_out= 'example_out.txt'
+    f = open(fname_out, 'w')
+    ss = f.write(ss)
+    f.close()
 
 ## --- test functions
 if __name__ == "__main__":
@@ -168,10 +174,4 @@ if __name__ == "__main__":
     # thetest_delete_file()
     #thetest_write_manylncomm_file()
     # thetest_write_manylncomm_file()
-
-    sЖ = """First line
-    Second line
-Third line"""
-    f = open('out.txt', 'w')
-    f.writelines()
-    f.close()
+    thetest_read_manylncomm_file()

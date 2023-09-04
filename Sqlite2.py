@@ -26,14 +26,19 @@ class MySqlite3_Chinook():
         # Создаем курсор - это специальный объект который делает запросы и получает их результаты
         self.cursor = self.conn.cursor()
         self.clear_all_tables()
+        self.num_tables = len(tables_list)
         print('Object initialized')
 
     def work_frame(self):
-        self.cursor.execute("PRAGMA foreign_keys = off;")
-        self.cursor.execute("BEGIN TRANSACTION;")
+        # self.cursor.execute("PRAGMA foreign_keys = off;")
+        # self.cursor.execute("BEGIN TRANSACTION;")
+        # www.geeksforgeeks.org/string-alignment-in-python-f-string/
+        for i in range(self.num_tables):
+            # print(f"{i:2}  {tables_list[i]:>15}")
+            self.create_table(tables_list[i])
 
-        self.cursor.execute("COMMIT TRANSACTION;")
-        self.cursor.execute("PRAGMA foreign_keys = on;")
+        # self.cursor.execute("COMMIT TRANSACTION;")
+        # self.cursor.execute("PRAGMA foreign_keys = on;")
 
     def clear_db_file(self, work_name:str):
         '''
@@ -49,7 +54,39 @@ class MySqlite3_Chinook():
         for table_name in tables_list:
             self.cursor.execute("DROP TABLE IF EXISTS " + table_name+';')
 
+    def create_prf_full_table_name_sql(self)->str:
+        match sql_exprt_prg:
+            case SqlExprtPrgType.full_SQLiteStudio:
+                prf_name = 'fS'
+            case SqlExprtPrgType.short_SQLiteStudio:
+                prf_name = 'sS'
+            case SqlExprtPrgType.dbeaver:
+                prf_name = 'dbeav'
+            case _:
+                prf_name = ''
+        return prf_name
 
+    def create_full_table_name_sql(self, table_name:str)->str:
+        global sql_export_list
+        prf_name = 'chinook_' if sql_export_type else ''
+        s = "\\".join([dat_dir, prf_name= table_name+'_create.sql']) #   print(s)
+        return s
+
+
+    def create_table(self, table_name:str):
+        create_full_table_name_sql = self.create_full_table_name_sql(table_name)
+        if file_exist(create_full_table_name_sql):
+            ss = self.load_create_table_sql(create_full_table_name_sql)
+            # https://habr.com/ru/articles/321510/
+            self.cursor.executescript(ss)
+        else:
+            print(f' Файл {create_full_table_name_sql} не найден')
+
+    def load_create_table_sql(self, create_full_table_name_sql:str)->str:
+        f = open(create_full_table_name_sql, 'r')
+        ss= f.read()
+        f.close()
+        return ss
 
 
 class_exem = MySqlite3_Chinook(my_db_fn)
