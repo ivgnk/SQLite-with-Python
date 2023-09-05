@@ -33,12 +33,21 @@ class MySqlite3_Chinook():
         # self.cursor.execute("PRAGMA foreign_keys = off;")
         # self.cursor.execute("BEGIN TRANSACTION;")
         # www.geeksforgeeks.org/string-alignment-in-python-f-string/
+        self.creating_tables()
+
+            # self.cursor.execute("COMMIT TRANSACTION;")
+        # self.cursor.execute("PRAGMA foreign_keys = on;")
+
+    def creating_tables(self):
+        all_tables = []
         for i in range(self.num_tables):
             # print(f"{i:2}  {tables_list[i]:>15}")
-            self.create_table(tables_list[i])
-
-        # self.cursor.execute("COMMIT TRANSACTION;")
-        # self.cursor.execute("PRAGMA foreign_keys = on;")
+            res = self.create_table(tables_list[i])
+            all_tables.append(res)
+        if all:
+            print('Все таблицы созданы')
+        else:
+            notall_tables= [not elem for elem in all_tables]
 
     def clear_db_file(self, work_name:str):
         '''
@@ -68,19 +77,21 @@ class MySqlite3_Chinook():
 
     def create_full_table_name_sql(self, table_name:str)->str:
         global sql_export_list
-        prf_name = 'chinook_' if sql_export_type else ''
-        s = "\\".join([dat_dir, prf_name= table_name+'_create.sql']) #   print(s)
+        prf_name = self.create_prf_full_table_name_sql()
+        s = "\\".join([dat_dir, prf_name+table_name+'_create.sql']) #   print(s)
         return s
 
 
-    def create_table(self, table_name:str):
+    def create_table(self, table_name:str)->bool:
         create_full_table_name_sql = self.create_full_table_name_sql(table_name)
         if file_exist(create_full_table_name_sql):
             ss = self.load_create_table_sql(create_full_table_name_sql)
             # https://habr.com/ru/articles/321510/
             self.cursor.executescript(ss)
+            return True
         else:
             print(f' Файл {create_full_table_name_sql} не найден')
+            return False
 
     def load_create_table_sql(self, create_full_table_name_sql:str)->str:
         f = open(create_full_table_name_sql, 'r')
