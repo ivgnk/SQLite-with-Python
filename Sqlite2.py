@@ -18,7 +18,8 @@ from pstring import *
 
 class MySqlite3_Chinook():
     def __init__(self, work_name:str):
-        self.clear_db_file(work_name = work_name)
+        if not self.clear_db_file(work_name = work_name):
+            print('Старый файл базы не удален')
         self.db_name = work_name
         # Создаем соединение с нашей базой данных
         # В нашем примере у нас это просто файл базы
@@ -48,12 +49,14 @@ class MySqlite3_Chinook():
             print('Все таблицы созданы')
         else:
             notall_tables= [not elem for elem in all_tables]
+            if not any(notall_tables): print('Ни одной таблицы не создано')
 
-    def clear_db_file(self, work_name:str):
+    def clear_db_file(self, work_name:str)->bool:
         '''
         https://sky.pro/media/udalenie-fajla-ili-papki-v-python/
         '''
-        delete_file(work_name)
+        the_deleted = delete_file(work_name)
+        return the_deleted
 
     def clear_all_tables(self):
         '''

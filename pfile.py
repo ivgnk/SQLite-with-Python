@@ -122,8 +122,14 @@ def file_exist(fname:str)->bool:
 
 def delete_file(fname:str)->bool:
     if file_exist(fname):
-       os.remove(fname)
-       return True
+       try:
+           os.remove(fname)
+       except Exception as err:
+           # https://docs.python.org/3/tutorial/errors.html
+           print(f'Ошибка: Невозможно удалить файл {fname}, \n  ошибка {err=}, \n  тип {type(err)=}')
+           return False
+       else: # выполняется в том случае, если исключения не было.
+           return True
     else:
        return False
 
